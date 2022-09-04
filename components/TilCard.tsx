@@ -1,3 +1,4 @@
+import React, { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import { TilRecord } from "../common";
@@ -16,8 +17,11 @@ const getHref = () => {
   return `${proto}//${host}${port}${path}`;
 }
 
-export function TilCard(props: any) {
-  const til = props.item as TilRecord;
+export interface TilCardProps {
+  item: TilRecord,
+}
+
+export const TilCard: FC<TilCardProps> = ({ item: til }: TilCardProps): JSX.Element => {
   const anchor = encodeURI(til.title);
 
   const copyLink = () => {

@@ -1,38 +1,24 @@
-import type { NextPage } from 'next'
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import hljs from 'highlight.js';
-import { TilRecord } from '../common';
+import { TilRecord, TilRecordDto } from '../common';
 import { TilCard } from '../components/TilCard';
+import { getPosts } from '../services/notion';
 
-// emulate URL anchor page scroll functionality
-const scrollToHashId = () => {
-  // const removeHash = this.removeHash
-  // get URL hash (minus the hash mark)
-  const hash = window.location.hash.substring(1)
-  if (hash && hash.length) {
-    setTimeout(
-      () => window.requestAnimationFrame(() => {
-        const el = document.getElementById(hash);
-        el!.scrollIntoView();
-      }),
-      0
-    )
+export async function getServerSideProps() {
+  const recordDtos = await getPosts();
+
+  return {
+    props: {
+      recordDtos,
+    }
   }
 }
 
-const Posts: NextPage = () => {
-  const [items, setItems] = useState<TilRecord[]>([]);
+interface PostProps {
+  recordDtos: TilRecordDto[]
+}
 
-  useEffect(() => {
-    axios.get('/api/posts')
-      .then((res: any) => res.data.map(TilRecord.fromDto))
-      .then((records: TilRecord[]) => {
-        records = records.sort((a, b) => (a.published < b.published) ? 1 : -1);
-        setItems(records);
-        scrollToHashId();
-      });
-  }, []);
+const Posts = ({ recordDtos }: PostProps) => {
 
   useEffect(() => {
     hljs.highlightAll();
@@ -45,7 +31,7 @@ const Posts: NextPage = () => {
         <p className="text-center text-5xl pt-5 pb-16">A collection of interesting things I&apos;ve learned 🤔</p>
 
         <div className="max-w-3xl mx-auto flex flex-col space-y-12">
-          { items.map((item, idx) => <TilCard key={idx} item={item} />) }
+          { recordDtos.map((record, idx) => <TilCard key={idx} item={TilRecord.fromDto(record)} />) }
         </div>
       </div>
     </div>
