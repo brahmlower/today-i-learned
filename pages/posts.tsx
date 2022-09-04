@@ -42,7 +42,7 @@ const Posts: NextPage = () => {
     <div className="App">
       <div className="max-w-7xl mx-auto py-12 sm:px-6 lg:px-8">
         <p className="text-center text-9xl font-black pt-12 pb-5"> Today I Learned </p>
-        <p className="text-center text-5xl pt-5 pb-16">A collection of interesting things I've learned 🤔</p>
+        <p className="text-center text-5xl pt-5 pb-16">A collection of interesting things I&apos;ve learned 🤔</p>
 
         <div className="max-w-3xl mx-auto flex flex-col space-y-12">
           { items.map((item, idx) => <TilCard key={idx} item={item} />) }

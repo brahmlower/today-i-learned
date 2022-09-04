@@ -43,7 +43,9 @@ export function TilCard(props: any) {
         </div>
       </div>
       <article className="px-4 py-5 sm:p-6 prose dark:prose-invert max-w-full">
-        <ReactMarkdown children={til.content} remarkPlugins={[remarkGfm]} />
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {til.content}
+        </ReactMarkdown>
       </article>
     </div>
   )
